@@ -55,7 +55,7 @@ public class Routine_BT_Data_Receiver {
      * (or until cancelled).
      */
     private class AcceptThread extends Thread {
-        
+
         // The local server socket
         private final BluetoothServerSocket mmServerSocket;
 
@@ -232,12 +232,12 @@ public class Routine_BT_Data_Receiver {
             OutputStream tmpOut = null;
 
             //dismiss the progressdialog when connection is established
+
             try{
                 mProgressDialog.dismiss();
             }catch (NullPointerException e){
                 e.printStackTrace();
             }
-
 
             try {
                 tmpIn = mmSocket.getInputStream();
@@ -251,6 +251,8 @@ public class Routine_BT_Data_Receiver {
         }
 
         public void run(){
+            GPSTracker gps = new GPSTracker(mContext);
+
             byte[] buffer = new byte[1024];  // buffer store for the stream
             int packet_id = 0;
             int bytes; // bytes returned from read()
@@ -274,8 +276,9 @@ public class Routine_BT_Data_Receiver {
                     int Mower_id=0;
                     String Date="";
                     String Time="";
-                    double GPS_x=0;
-                    double GPS_y=0;
+
+                    double GPS_x=gps.getLatitude();
+                    double GPS_y=gps.getLongitude();
 
                     double Joystick_x=0;
                     double Joystick_y=0;
@@ -314,15 +317,33 @@ public class Routine_BT_Data_Receiver {
                             Mower_id =  Integer.parseInt(separated[1]);
                             Date = separated[2];
 
+                            try{
+                                GPS_x = Double.parseDouble(separated[4]);
+                            }  catch (Exception e)   {
+                                e.printStackTrace();
 
-                            GPS_x = Double.parseDouble(separated[4]);
-                            GPS_y =  Double.parseDouble(separated[5]);
-                            Joystick_x =  Double.parseDouble(separated[6]);
-                            Joystick_y =  Double.parseDouble(separated[7]);
-                            Joystick_z =  Double.parseDouble(separated[8]);
-                            Joystick_b1 =  Double.parseDouble(separated[9]);
-                            Joystick_b2 =  Double.parseDouble(separated[10]);
+                            }
 
+                            try{
+                                GPS_y =  Double.parseDouble(separated[5]);
+                            }  catch (Exception e)   {
+                                e.printStackTrace();
+
+                            }
+
+                            Joystick_x =  (Double.parseDouble(separated[6])/100);
+                            Joystick_y =  (Double.parseDouble(separated[7])/100);
+                            Joystick_z =  (Double.parseDouble(separated[8])/100);
+                            Joystick_b1 = (Double.parseDouble(separated[9])/100);
+                            Joystick_b2 = (Double.parseDouble(separated[10])/100);
+
+                            Log.d(TAG, separated[4]);
+                            Log.d(TAG, separated[5]);
+                            Log.d(TAG, separated[6]);
+                            Log.d(TAG, separated[7]);
+                            Log.d(TAG, separated[8]);
+                            Log.d(TAG, separated[9]);
+                            Log.d(TAG, separated[10]);
                             Oil_temp =  Double.parseDouble(separated[11]);
 
                             w_1 =  ((Double.parseDouble(separated[12])/100)-1);
@@ -349,13 +370,34 @@ public class Routine_BT_Data_Receiver {
                             Mower_id =  Integer.parseInt(separated[1]);
                             Date = separated[2];
 
-                            GPS_x = Double.parseDouble(separated[4]);
-                            GPS_y =  Double.parseDouble(separated[5]);
-                            Joystick_x =  Double.parseDouble(separated[6]);
-                            Joystick_y =  Double.parseDouble(separated[7]);
-                            Joystick_z =  Double.parseDouble(separated[8]);
-                            Joystick_b1 =  Double.parseDouble(separated[9]);
-                            Joystick_b2 =  Double.parseDouble(separated[10]);
+                            try{
+                                GPS_x = Double.parseDouble(separated[4]);
+                            }  catch (Exception e)   {
+                                e.printStackTrace();
+                                 GPS_x=gps.getLatitude();
+
+                            }
+
+                            try{
+                                GPS_y =  Double.parseDouble(separated[5]);
+                            }  catch (Exception e)   {
+                                e.printStackTrace();
+                                GPS_y=gps.getLongitude();
+                            }
+
+                            Joystick_x =  (Double.parseDouble(separated[6])/100);
+                            Joystick_y =  (Double.parseDouble(separated[7])/100);
+                            Joystick_z =  (Double.parseDouble(separated[8])/100);
+                            Joystick_b1 = (Double.parseDouble(separated[9])/100);
+                            Joystick_b2 = (Double.parseDouble(separated[10])/100);
+                            Log.d(TAG, separated[4]);
+                            Log.d(TAG, separated[5]);
+                            Log.d(TAG, separated[6]);
+                            Log.d(TAG, separated[7]);
+                            Log.d(TAG, separated[8]);
+                            Log.d(TAG, separated[9]);
+                            Log.d(TAG, separated[10]);
+
                             Oil_temp =  Double.parseDouble(separated[11]);
 
                             w_1 =  ((Double.parseDouble(separated[12])/100)-1);
@@ -375,13 +417,16 @@ public class Routine_BT_Data_Receiver {
                         } else {
                             Log.d(TAG, "WE DID THIS NONE!");
                         }
+
                     Log.d(TAG, "MOWER ID: " + Mower_id);
                     Log.d(TAG, "Time: " + Time);
                     Log.d(TAG, "y_3: " + y_3);
                     Calendar c = Calendar.getInstance();
                     SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss:SSSS");
                     String formattedDate = df.format(c.getTime());
-                    db.addNewPacket(packet_id, Page_Main_Driver.machineID, Date, formattedDate, GPS_x, GPS_y, Joystick_x,Joystick_y,Joystick_z,Joystick_b1,Joystick_b2, Oil_temp, w_1, x_1, y_1, z_1, w_2, x_2, y_2, z_2, w_3, x_3, y_3, z_3);
+                    db.addNewPacket(packet_id, Page_Main_Driver.machineID, Date, formattedDate, GPS_x, GPS_y, Joystick_x,
+                            Joystick_y,Joystick_z,Joystick_b1,Joystick_b2, Oil_temp,
+                            w_1, x_1, y_1, z_1, w_2, x_2, y_2, z_2, w_3, x_3, y_3, z_3);
 
                     Log.d(TAG, "Packet Data of the Time entered as: "+db.getSessionData(packet_id).getKey_Time());
                     Log.d(TAG, "Packet addition was successful with packet ID = "+packet_id);

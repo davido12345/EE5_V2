@@ -117,10 +117,10 @@ public class Database_Session_Storage extends SQLiteOpenHelper {
             sessionDetails.setKey_Gps_y((GPS_y));
 
             sessionDetails.setKey_Joystick_x((Joystick_x));
-            sessionDetails.setKey_Joystick_x((Joystick_y));
-            sessionDetails.setKey_Joystick_x((Joystick_z));
-            sessionDetails.setKey_Joystick_x((Joystick_b1));
-            sessionDetails.setKey_Joystick_x((Joystick_b2));
+            sessionDetails.setKey_Joystick_y((Joystick_y));
+            sessionDetails.setKey_Joystick_z((Joystick_z));
+            sessionDetails.setKey_Joystick_b1((Joystick_b1));
+            sessionDetails.setKey_Joystick_b2((Joystick_b2));
 
             sessionDetails.setKey_Oil_Temp((Oil_temp));
 
@@ -249,7 +249,8 @@ public class Database_Session_Storage extends SQLiteOpenHelper {
         Data_Structure_Packet sessionDetails = new Data_Structure_Packet();
         SQLiteDatabase db = this.getReadableDatabase();
         //specify the columns to be fetched
-        String[] columns = {Key_Packet_id, Key_Mower_id, Key_Session_id, Key_Date, Key_Time, Key_Gps_x, Key_Gps_y, Key_Joystick_x,Key_Joystick_y,Key_Joystick_z,Key_Joystick_b1,Key_Joystick_b2, Key_Oil_Temp, Key_w_1, Key_x_1, Key_y_1, Key_z_1,
+        String[] columns = {Key_Packet_id, Key_Mower_id, Key_Session_id, Key_Date, Key_Time, Key_Gps_x, Key_Gps_y,
+                Key_Joystick_x,Key_Joystick_y,Key_Joystick_z,Key_Joystick_b1,Key_Joystick_b2, Key_Oil_Temp, Key_w_1, Key_x_1, Key_y_1, Key_z_1,
                 Key_w_2, Key_x_2, Key_y_2, Key_z_2, Key_w_3, Key_x_3, Key_y_3,  Key_z_3};
         //Select condition
         String selection = PacketId + " = ?";

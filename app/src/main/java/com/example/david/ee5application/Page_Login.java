@@ -35,14 +35,17 @@ public class Page_Login extends AppCompatActivity {
         validPasswords.add("admin");
         validPasswords.add("driver");
 
+
+
+
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss:SSSS");
         String formattedDate = df.format(c.getTime());
         // formattedDate have current date/time
-        Toast.makeText(this, formattedDate, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, latitudes, Toast.LENGTH_SHORT).show();
 
-        
-        
+
+
 
         //Check Login details once the login is verified.
         Login.setOnClickListener(new View.OnClickListener() {

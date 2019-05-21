@@ -31,11 +31,16 @@ public class Page_Arm_State extends AppCompatActivity {
     int machineID = machineSelected;
     String queryURL = Links.specificSessionsGPS+machineID;
     String TAG = "ArmStatePage: ";
+    public static int m_ID = 0;
+    public static int s_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.arm_state_page);
+        m_ID = Page_Select_Machine_Admin.machine_ID;
+        s_ID = Page_Select_Session_Admin.session_ID;
 
         Button mapCheck = (Button)findViewById(R.id.mapButtonArm);
 

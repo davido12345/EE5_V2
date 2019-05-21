@@ -33,6 +33,7 @@ public class Page_Select_Machine_Admin extends AppCompatActivity {
     ListView listView;
     String TAG = "David: ";
     public ArrayList<String> MachineList = new ArrayList<>();
+    public static int machine_ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class Page_Select_Machine_Admin extends AppCompatActivity {
                 machineSelected = position;
                 Log.d(TAG, "The machine selected is "+machineSelected);
                 String name = MachineList.get(position); //The name of the machine which is clicked.
+                machine_ID = InfoArrays.id_MowerS.get(position);
                 Log.d(TAG, " How much data received: "+InfoArrays.id_MowerS.size());
                 String fetchURL = Links.distinctSessionsFromSD+InfoArrays.id_MowerS.get(position);
                 Log.d(TAG, "THE URL ACCESSED IS: "+fetchURL);

@@ -2,12 +2,16 @@ package com.example.david.ee5application;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -37,6 +41,9 @@ public class Upload_page extends AppCompatActivity {
     ArrayList allDataStored = new ArrayList();
     Database_Session_Storage db2 = null;
     Context mContext;
+
+    //Location
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -47,12 +54,17 @@ public class Upload_page extends AppCompatActivity {
         progressBar.setMax(100);
         progressBar.setProgress(0);
 
+
+
         Intent start = getIntent();
         Context context = getApplicationContext();
         mContext = context;
         ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         allDataStored.clear();
+
+        //Location
+
 
         if (mWifi.isConnected()) {
             Toast toast = Toast.makeText(context, "WIFI CONNECTED, UPLOAD STARTING", Toast.LENGTH_SHORT);
@@ -73,7 +85,7 @@ public class Upload_page extends AppCompatActivity {
                     Log.d(TAG, "The ITEM ID: " + item.getPacket_id());
                     Log.d(TAG, "The TIMESTAMP: " + item.getKey_Time());
                     String insertPacketToDataBase = "https://a18ee5mow2.studev.groept.be/InsertSessionData.php?id_Session=" + (5) + "&id_Mower=" + Page_Main_Driver.machineID +
-                            "&time_SessionData=" + item.getKey_Time() + "&Gps_x=" + item.getKey_Gps_x() + "&Gps_y=" + item.getKey_Gps_x() + "&Joystick_x=" + item.getKey_Joystick_x() +
+                            "&time_SessionData=" + item.getKey_Time() + "&Gps_x=" + item.getKey_Gps_x() + "&Gps_y=" + item.getKey_Gps_y() + "&Joystick_x=" + item.getKey_Joystick_x() +
                             "&Joystick_y=" + item.getKey_Joystick_y() + "&Joystick_z=" + item.getKey_Joystick_z() + "&Joystick_b1=" + item.getKey_Joystick_b1() +
                             "&Joystick_b2=" + item.getKey_Joystick_b2() + "&Oil_temp=" + item.getKey_Oil_Temp() + "&w_1=" + item.getKey_w_1() + "&x_1=" + item.getKey_x_1() +
                             "&y_1=" + item.getKey_y_1() + "&z_1=" + item.getKey_z_1() + "&w_2=" + item.getKey_w_2() + "&x_2=" + item.getKey_x_2() + "&y_2=" + item.getKey_y_2() + "&z_2=" + item.getKey_z_2() +
@@ -111,6 +123,9 @@ public class Upload_page extends AppCompatActivity {
             }
         }
     }
+
+
+
     public void JSonVolley(final String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
 

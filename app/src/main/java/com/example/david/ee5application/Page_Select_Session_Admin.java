@@ -34,6 +34,7 @@ public class Page_Select_Session_Admin extends AppCompatActivity {
     public ArrayList<String> SessionList = new ArrayList<>();
     String TAG = "Loading Page";
     public int machineID = machineSelected;
+    public static int session_ID;
     String fetchURL = Links.specificSessions+machineID;
 
     @Override
@@ -84,10 +85,13 @@ public class Page_Select_Session_Admin extends AppCompatActivity {
                 //When an item is clicked we must redirect to a new page for the sessions of this one
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                     Log.d(TAG, "The machine selected is " + machineSelected);
                     String name = SessionList.get(position); //The name of the machine which is clicked.
+                    session_ID = InfoArrays.id_sess.get(position);
                     Log.d(TAG, " How much data received: "+InfoArrays.id_MowerS.size());
                     JSonVolley(Links.allSessionData);
+
                 }
             });
 
