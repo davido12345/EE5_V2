@@ -28,10 +28,11 @@
             android:text="A temperature sensor is a device that detects and measures hotness and coolness and converts it into an electrical signal. "
             android:textSize="15sp" />
 
-        <ListView
-            android:id="@+id/tempData"
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </LinearLayout>
 
 </RelativeLayout>

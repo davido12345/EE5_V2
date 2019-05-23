@@ -156,6 +156,7 @@ public class Page_Main_Admin extends AppCompatActivity {
         InfoArrays.id_Mower.clear();
         InfoArrays.id_workGroup.clear();
         InfoArrays.name_Mower.clear();
+        InfoArrays.id_MowerS.clear();
 
     }
 }

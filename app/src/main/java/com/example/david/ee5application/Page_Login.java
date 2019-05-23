@@ -30,9 +30,12 @@ public class Page_Login extends AppCompatActivity {
         Button Login = (Button)findViewById(R.id.loginButton);
 
         //Application must contain the valid login as there is no internet connection to confirm driver identities!
+        //ENTER ALL VALID USERNAME/PASSWORD COMBINATION BELOW!
+
         validUsers.add("admin");
-        validUsers.add("driver");
         validPasswords.add("admin");
+
+        validUsers.add("driver");
         validPasswords.add("driver");
 
 

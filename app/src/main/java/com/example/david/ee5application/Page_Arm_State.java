@@ -2,6 +2,7 @@ package com.example.david.ee5application;
 
 import android.content.Context;
 import android.content.Intent;
+import android.icu.text.IDNA;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,10 +30,12 @@ import static com.example.david.ee5application.Page_Select_Machine_Admin.machine
 
 public class Page_Arm_State extends AppCompatActivity {
     int machineID = machineSelected;
-    String queryURL = Links.specificSessionsGPS+machineID;
+
     String TAG = "ArmStatePage: ";
     public static int m_ID = 0;
     public static int s_ID = 0;
+    public static String mapsURL = "";
+    public static String temperatureURL = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +50,11 @@ public class Page_Arm_State extends AppCompatActivity {
         mapCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String queryURL = Links.specificSessionsGPS+m_ID+"&id_Session="+s_ID;
                 Context context = getApplicationContext();
                 Toast toast = Toast.makeText(context, "Preparing Map", Toast.LENGTH_SHORT);
                 toast.show();
+                mapsURL = queryURL;
                 clearOldSessData();
                 JSonVolley(queryURL);
 
@@ -75,8 +80,16 @@ public class Page_Arm_State extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent data = new Intent(Page_Arm_State.this, Page_Temperature_Data.class);
-                startActivity(data);
+
+                String queryURL = Links.temperatureData+m_ID+"&id_Session="+s_ID;
+                Context context = getApplicationContext();
+                Toast toast = Toast.makeText(context, "Fetching temperature data", Toast.LENGTH_SHORT);
+                toast.show();
+                temperatureURL = queryURL;
+                clearOldSessData();
+                JSonVolley(queryURL);
+
+
 
             }
         });
@@ -104,9 +117,15 @@ public class Page_Arm_State extends AppCompatActivity {
                     }
 
                     //TRY NEW ACTIVITY LAUNCH HERE
+                    if (url.equals(mapsURL)) {
                     Intent Map = new Intent(Page_Arm_State.this, Page_Map.class);
                     startActivity(Map);
                     finish();
+                    } else if (url.equals(temperatureURL)) {
+                        Intent data1 = new Intent(Page_Arm_State.this, Page_Temperature_Data.class);
+                        startActivity(data1);
+                        finish();
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -122,21 +141,17 @@ public class Page_Arm_State extends AppCompatActivity {
 
     //Decodes received GPS information
     public void JSonToArray (JSONObject jsonObject, String url) throws Exception {
-        if (url.equals(Links.allMowerData)) {
 
-        } else if (url.equals(Links.allSessionData)) {
-
-        } else if (url.equals(Links.allSessions)) {
-
-        } else if (url.equals(Links.specificSessionsGPS+machineID)) {
-
+        if (url.equals(mapsURL)) {
             LatLng temp = new LatLng(jsonObject.getDouble(Keys.session_data_Gps_x), jsonObject.getDouble(Keys.session_data_Gps_y));
             InfoArrays.GpsLocations.add(temp);
             InfoArrays.GpsLocationsX.add(jsonObject.getDouble(Keys.session_data_Gps_x));
             InfoArrays.GpsLocationsY.add(jsonObject.getDouble(Keys.session_data_Gps_y));
-
+        } else if (url.equals(temperatureURL)) {
+            InfoArrays.Oil_TempSD.add(jsonObject.getDouble(Keys.session_data_Oil_temp));
+            InfoArrays.timeSD.add(jsonObject.getString(Keys.session_data_time));
+            //Log.d(TAG, "getting size :" + InfoArrays.firstNames.size());
         }
-        //Log.d(TAG, "getting size :" + InfoArrays.firstNames.size());
     }
 
     //Empties existing data in the arraylists to prevent duplicates.
@@ -144,5 +159,8 @@ public class Page_Arm_State extends AppCompatActivity {
         InfoArrays.GpsLocationsX.clear();
         InfoArrays.GpsLocationsY.clear();
         InfoArrays.GpsLocations.clear();
+        InfoArrays.Oil_TempSD.clear();
+        InfoArrays.timeSD.clear();
+
     }
 }

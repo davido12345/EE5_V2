@@ -40,6 +40,7 @@ public class Page_Select_Machine_Admin extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.data_checking);
+        clearOldSessData();
         listView = findViewById(R.id.listView);
         MachineList.clear();
         Context context = getApplicationContext();
